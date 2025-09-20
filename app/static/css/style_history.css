@@ -1,0 +1,27 @@
+html {
+    scroll-behavior: smooth;
+}
+
+#scrollToTopBtn, #scrollToBottomBtn {
+    display: none; /* Sembunyikan tombol secara default */
+    position: fixed; /* Tetap di posisi yang sama saat di-scroll */
+    bottom: 20px; /* Jarak dari bawah */
+    right: 20px; /* Jarak dari kanan */
+    z-index: 99; /* Pastikan tombol di atas elemen lain */
+    border: none;
+    outline: none;
+    background-color: #007bff; /* Warna background */
+    color: white; /* Warna teks */
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 50%; /* Membuat tombol bulat */
+    font-size: 18px;
+}
+
+#scrollToBottomBtn {
+    bottom: 80px; /* Jarak antara tombol atas dan bawah */
+}
+
+#scrollToTopBtn:hover, #scrollToBottomBtn:hover {
+    background-color: #0056b3; /* Warna background saat dihover */
+}

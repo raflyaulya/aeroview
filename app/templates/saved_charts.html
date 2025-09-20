@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Charts</title>
+</head>
+<body>
+    <h2>Saved Charts</h2>
+    <ul>
+        {% for chart in charts %}
+        <li>
+            <strong>{{ chart.chart_name }}</strong> |
+            Airline: {{ chart.airline }} |
+            Sentiment: {{ chart.sentiment }} |
+            Type: {{ chart.chart_type }} |
+            Time: {{ chart.generated_on }} <br>
+            <img src="{{ chart.image_path }}" alt="Chart Image" width="300">
+        </li>
+        {% else %}
+        <li>No saved charts found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

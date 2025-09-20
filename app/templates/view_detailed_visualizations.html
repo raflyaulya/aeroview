@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detail Timeline Visualizations</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        #scrollToTopBtn, #scrollToBottomBtn {
+        padding: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 50%;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        #scrollToTopBtn:hover,
+        #scrollToBottomBtn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Detail Timeline Visualizations</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Airline</th>
+            <th>Name of Visualization</th>
+            <th>Saved At</th>
+            <th>Image</th>
+            <th>Action</th>
+        </tr>
+        {% for viz in visualizations %}
+        <tr>
+            <td>{{ viz.id }}</td>
+            <td>{{ viz.airline }}</td>
+            <td>{{ viz.name_of_visualization }}</td>
+            <td>{{ viz.saved_at }}</td>
+            <td>
+                {% if viz.image_data %}
+                    <img src="data:image/png;base64,{{ viz.image_data }}" width="700">
+                {% else %}
+                    No image
+                {% endif %}
+            </td>
+            <td>
+                <form action="{{ url_for('main.delete_detailed_visualization', viz_id=viz.id) }}" method="POST">
+                    <button type="submit" onclick="return confirm('Are you sure you want to delete this visualization?');">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="{{ url_for('main.history') }}" class="button">Go to History</a>
+
+    <br><br>
+    <a href="{{ url_for('main.index') }}" class="button">Back to Main Page</a>
+
+    <!-- Arrow Buttons -->
+    <button id="scrollToTopBtn" title="Go to top" style="position: fixed; bottom: 60px; right: 20px; display: none;">⬆️</button>
+    <button id="scrollToBottomBtn" title="Go to bottom" style="position: fixed; bottom: 20px; right: 20px;">⬇️</button>
+
+    <script>
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+        const scrollToBottomBtn = document.getElementById("scrollToBottomBtn");
+
+        // Munculin tombol scroll ke atas kalau user scroll
+        window.onscroll = function () {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+
+        scrollToTopBtn.onclick = function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        scrollToBottomBtn.onclick = function () {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        };
+    </script>
+
+</body>
+</html>

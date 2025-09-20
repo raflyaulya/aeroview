@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saving History</title>
+</head>
+<body>
+    <h1>Saving History</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Airline</th>
+                <th>Sentiment</th>
+                <th>Review</th>  
+                <th>Timestamp</th>
+                <th>Data visualization by Airline</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for submission in submissions %}
+            <tr>
+                <td>{{ submission[0] }}</td>  <!-- ID  =  just a list of num -->
+                <td>{{ submission[1] }}</td>  <!-- Airline = airline's name  -->
+                <td>{{ submission[2] }}</td> <!-- Sentiment  =  sentiment [positive / negative]  -->
+                <td>{{ submission[3] }}</td> <!-- Review  =  review text  -->
+                <td>{{ submission[4] }}</td>  <!-- Timestamp  =  timeline when the user saved their final sentiment result  -->
+                <!-- Di dalam loop submissions -->
+                <!-- <td>
+                    <a href="{{ url_for('airline_timeline', airline=submission[1]) }}">
+                        {{ submission[1] }}
+                    </a>
+                </td> -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+        <!-- Di bagian bawah sebelum </body> -->
+    <!-- <a href="{{ url_for('timeline') }}">
+        <button type="button">Timeline Visualization</button>
+    </a> -->
+    <br>
+    <br>
+    <button type="submit">
+        <a href="{{ url_for('index') }}">Back to Main Page</a>
+    </button>
+</body>
+</html>

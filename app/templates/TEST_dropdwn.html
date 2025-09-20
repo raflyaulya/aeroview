@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TEST DROP DOWN</title>
+</head>
+<body>
+    <form action="{{ url_for('finalResult') }}" method="post">
+        <label for="airlineName">Choose a car:</label>
+        <select name="airlineName" id="airlineName">
+          <option value="emirates">Emirates</option>
+          <option value="aeroflot">Aeroflot</option>
+          <option value="aeromexico">Aeromexico</option>   
+      
+          <option value="iberia">Iberia</option>
+        </select>
+        <input type="submit" value="Submit">
+      </form>   
+      
+</body>
+</html>

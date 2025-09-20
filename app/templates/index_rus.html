@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/style.css')}}"
+    />
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <link rel="image" />
+    <title>Главная страница</title>
+    <style>
+      ul li {
+        display: inline-flex;
+      }
+      ul li a {
+        text-decoration: none;
+        color: #fff;
+        padding: 5px 20px;
+        border: 1px solid transparent;
+        transition: 0.6s ease;
+      }
+      ul li a:hover {
+        background-color: #fff;
+        color: #000;
+      }
+      /* li{
+            display: inline;
+        } */
+      .nav-buttons {
+        position: fixed;
+        top: 20px; /* Atur jarak dari atas */
+        right: 20px; /* Atur jarak dari kanan */
+        flex-direction: row-reverse;
+      }
+
+      .nav-button {
+        padding: 10px 20px;
+        margin-left: 100px;
+        background-color: #007bff; /* Warna latar belakang tombol */
+        color: #fff; /* Warna teks tombol */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .nav-button:hover {
+        background-color: #0056b3; /* Warna latar belakang tombol saat dihover */
+      }
+    </style>
+  </head>
+  <body>
+
+    {% extends "base.html" %}
+    
+    {% block title %}Main Page - Airline Sentiment Analysis{% endblock%}
+
+    {% block content %}
+    <header>
+        <div class="nav">
+            <ul>
+              <li>
+                  <form action="{{ url_for('main.rules') }}" method="post">
+                    <button type="submit">Правила</button>
+                  </form>
+                  <form action="{{ url_for('main.aboutUs') }}" method="post">
+                    <button type="submit">О нас</button>
+                  </form>
+                  <form action="{{ url_for('main.history') }}" method="post">
+                    <button type="submit">Архив анализа отзывов</button>
+                  </form>
+                  <form action="{{ url_for('main.index') }}" method="post">
+                    <button type="submit">Global version</button>
+                  </form>
+              </li>
+            </ul>
+          </div>      
+    </header>
+
+
+    <h1>Проанализируйте свою любимую авиакомпанию!</h1>
+    <h3>Введите название авиакомпании ниже</h3>
+    
+    <div class="container">
+      <br /><br />
+      <form action="{{ url_for('main.finalResult_rus') }}" method="post">
+        <label for="airlineName">Выберите авиакомпанию!</label>
+        <select name="airlineName" id="airlineName">
+          <option value="aeroflot">Aeroflot</option>
+          <option value="alrosa-alrosa-airlines">Alrosa Mirny Air Enterprise</option>
+          <option value="aviakompaniya-avrora-aurora">Aurora</option>
+          <option value="azimuth">Azimuth</option>
+          <option value="azurair-katekavia">Azur air</option>
+          <option value="i-fly">I-Fly</option>
+          <option value="ikar-ikar-airlines">Ikar</option>
+          <option value="iraero-0">IrAero</option>
+          <option value="izhavia">Izhavia</option>
+          <option value="nord-star-airlines-aviakompaniya-taimyr">Nordstar</option>
+          <option value="nordwind-airlines">Nordwind Airlines</option>
+          <option value="pobeda-0">Pobeda</option>
+          <option value="red-wings">Red Wings Airlines</option>
+          <option value="rossiya-rossiiskie-avialinii">Rossiya</option>
+          <option value="ruslain">RusLine</option>
+          <option value="s7-airlines-oao-aviakompaniya-sibir">S7 Airlines</option>
+          <option value="severstal-avia">Severstal Air Company</option>
+          <option value="smartavia-3">SmartAvia</option>
+          <option value="uralskie-avialinii">Ural Airlines</option>
+          <option value="yuvt-aero-uvt-aero">UVT Aero</option>
+          <option value="utair">Utair</option>
+          <option value="yakutia">Yakutia Airlines</option>
+          <option value="yamal">Yamal Airlines</option>
+        </select>
+        <!-- <input type="submit" value="Submit">
+      </form>          -->
+
+
+          <label for="selectSentiment">Выберите настроение!</label>
+          <select name="selectSentiment" id="selectSentiment">
+            <option value="Positive">Positive</option>
+            <option value="Negative">Negative</option>
+        </select>
+          
+
+        <button type="submit">Analyse</button>
+        <br>
+
+        <a href="{{ url_for('main.view_saved_charts') }}" class="btn btn-primary">Просмотреть Сохраненные Диаграммы</a>
+
+      </form>
+
+    </div>
+    {% endblock %}
+  </body>
+</html>

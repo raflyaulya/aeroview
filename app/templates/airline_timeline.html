@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline for {{ airline }}</title>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        .submit {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #ff0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        #scrollToTopBtn, #scrollToBottomBtn {
+        padding: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 50%;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        #scrollToTopBtn:hover,
+        #scrollToBottomBtn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Visualization of Timeline & Percentage for {{ airline }}</h1>
+
+    <!-- <button id="scrollToBottomBtn" title="Go to bottom">↓</button>
+    <button id="scrollToTopBtn" title="Go to top">↑</button> -->
+    
+    <form method="GET" action="{{ url_for('main.airline_timeline', airline=airline) }}">
+        <!-- Year -->
+        <label for="year">Select Year:</label>
+        <select name="year" id="year" required>
+            <option value="">Select Year</option>
+            {% for year in available_years %}
+                <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>{{ year }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Period -->
+        <label for="period">Select Period:</label>
+        <select name="period" id="period" required>
+            <option value="">Select Period</option>
+            <option value="jan-apr" {% if selected_period == "jan-apr" %}selected{% endif %}>Januari - April</option>
+            <option value="may-aug" {% if selected_period == "may-aug" %}selected{% endif %}>May - August</option>
+            <option value="sep-dec" {% if selected_period == "sep-dec" %}selected{% endif %}>September - Desember</option>
+        </select>
+
+        <!-- Quarter -->
+        <label for="quarter">Select Quarter:</label>
+        <select name="quarter" id="quarter" required>
+            <option value="">Select Quarter</option>
+            <option value="q1" {% if selected_quarter == "q1" %}selected{% endif %}>Kuartal 1</option>
+            <option value="q2" {% if selected_quarter == "q2" %}selected{% endif %}>Kuartal 2</option>
+            <option value="q3" {% if selected_quarter == "q3" %}selected{% endif %}>Kuartal 3</option>
+            <option value="q4" {% if selected_quarter == "q4" %}selected{% endif %}>Kuartal 4</option>
+        </select>
+
+        <!-- Month Range -->
+        <div>
+            <label for="start_month">Start Month:</label>
+            <select name="start_month" id="start_month">
+                <option value="">Select Start Month</option>
+                {% for month in ["January", "February", "March", "April", "May", "June", 
+                                 "July", "August", "September", "October", "November", "December"] %}
+                    <option value="{{ month }}" {% if start_month == month %}selected{% endif %}>{{ month }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="end_month">End Month:</label>
+            <select name="end_month" id="end_month">
+                <option value="">Select End Month</option>
+                {% for month in ["January", "February", "March", "April", "May", "June", 
+                                 "July", "August", "September", "October", "November", "December"] %}
+                    <option value="{{ month }}" {% if end_month == month %}selected{% endif %}>{{ month }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="submit">Show the graph!</button>
+    </form>
+    
+    <!-- Visualizations -->
+    {% if plots %}
+        <!-- Plot 1-5 (existing) -->
+        <div>
+            <h2>Количество отзывов клиентов по месяцам в {{ selected_year }} г.</h2>
+            <img src="data:image/png;base64,{{ plots[0] }}" alt="Tren Jumlah Review">
+        </div>
+
+        <form action="{{ url_for('main.save_detailed_visualization') }}" method="POST">
+            <input type="hidden" name="airline" value="{{ airline }}">
+            <input type="hidden" name="name_of_visualization" value="Количество отзывов клиентов по месяцам в {{ selected_year }} г.">
+            <input type="hidden" name="image_data" value="{{ plots[0] }}">
+            <button type="submit">💾 Save 1</button>
+        </form>
+        
+        <div>
+            <h2>Процент Позитивных и Негативных настроений в месяц в {{ selected_year }} году</h2>
+            <img src="data:image/png;base64,{{ plots[1] }}" alt="Persentase Sentiment per Bulan">
+        </div>
+        <form action="{{ url_for('main.save_detailed_visualization') }}" method="POST">
+            <input type="hidden" name="airline" value="{{ airline }}">
+            <input type="hidden" name="name_of_visualization" value="Процент Позитивных и Негативных настроений в {{ selected_year }} году">
+            <input type="hidden" name="image_data" value="{{ plots[1] }}">
+            <button type="submit">💾 Save 2</button>
+        </form>
+
+        <!-- New Plot 6 (Month Range) -->
+        {% if plots|length >= 6 and start_month and end_month %}
+        <div>
+            <h2>Процент настроений в месяц ({{ start_month }} - {{ end_month }} {{ selected_year }})</h2>
+            <img src="data:image/png;base64,{{ plots[5] }}" alt="Sentimen per Bulan (Range)">
+        </div>
+        <form action="{{ url_for('main.save_detailed_visualization') }}" method="POST">
+            <input type="hidden" name="airline" value="{{ airline }}">
+            <input type="hidden" name="name_of_visualization" value="Persentase Sentimen per Bulan ({{ start_month }} - {{ end_month }} {{ selected_year }})">
+            <input type="hidden" name="image_data" value="{{ plots[5] }}">
+            <button type="submit">💾 Save 3</button>
+        </form>
+        {% endif %}
+
+        
+        <div>
+            <h2>Процент Позитивных и Негативных настроений в {{ selected_year }} году</h2>
+            <img src="data:image/png;base64,{{ plots[3] }}" alt="Persentase Sentiment">
+        </div>
+        <form action="{{ url_for('main.save_detailed_visualization') }}" method="POST">
+            <input type="hidden" name="airline" value="{{ airline }}">
+            <input type="hidden" name="name_of_visualization" value="Процент Позитивных и Негативных настроений в {{ selected_year }} году">
+            <input type="hidden" name="image_data" value="{{ plots[3] }}">  
+            <button type="submit">💾 Save 4</button>
+        </form>
+        
+
+        <div>
+            <h2>Процент Позитивных и Негативных настроений в период ({{ selected_period }}) {{ selected_year }} г.</h2>
+            <img src="data:image/png;base64,{{ plots[4] }}" alt="Persentase Sentiment Periode">
+        </div>
+        <form action="{{ url_for('main.save_detailed_visualization') }}" method="POST">
+            <input type="hidden" name="airline" value="{{ airline }}">
+            <input type="hidden" name="name_of_visualization" value="Процент Позитивных и Негативных настроений в период ({{ selected_period }}) {{ selected_year }} г.">
+            <input type="hidden" name="image_data" value="{{ plots[4] }}">
+            <button type="submit">💾 Save 5</button>
+        </form>
+
+        
+        <div>
+            <h2>Процент Позитивных и Негативных настроений в {{ selected_quarter }}-ом квартале {{ selected_year }} года</h2>
+            <img src="data:image/png;base64,{{ plots[2] }}" alt="Persentase Sentiment Kuartal">
+        </div>
+        <form action="{{ url_for('main.save_detailed_visualization') }}" method="POST">
+            <input type="hidden" name="airline" value="{{ airline }}">
+            <input type="hidden" name="name_of_visualization" value="Процент Позитивных и Негативных настроений в {{ selected_quarter }}-ом квартале {{ selected_year }} года">
+            <input type="hidden" name="image_data" value="{{ plots[2] }}">
+            <button type="submit">💾 Save 6</button>
+        </form>
+
+    {% else %}
+        <p>No data available for this airline.
+            <br> You have to Analyze to get the data information for {{airline}}
+        </p>
+    {% endif %}
+    
+    <br>
+    <a href="{{ url_for('main.history') }}" class="button">Back to History</a>
+
+    <br><br>
+    <a href="{{ url_for('main.index') }}" class="button">Back to Main Page</a>
+
+    <!-- Arrow Buttons -->
+    <button id="scrollToTopBtn" title="Go to top" style="position: fixed; bottom: 60px; right: 20px; display: none;">⬆️</button>
+    <button id="scrollToBottomBtn" title="Go to bottom" style="position: fixed; bottom: 20px; right: 20px;">⬇️</button>
+
+    <script>
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+        const scrollToBottomBtn = document.getElementById("scrollToBottomBtn");
+
+        // Munculin tombol scroll ke atas kalau user scroll
+        window.onscroll = function () {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopBtn.style.display = "block";
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        };
+
+        scrollToTopBtn.onclick = function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        scrollToBottomBtn.onclick = function () {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        };
+    </script>
+
+</body>
+</html>
