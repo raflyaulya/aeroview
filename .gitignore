@@ -22,4 +22,6 @@ migrations/
 .vscode/
 __pycache__/
 */__pycache__/
-**/__pycache__/
+**/__pycache__/airline_reviews.db database BACKUPP - Copy.db database BCKUPP.db database.db
+er_diagram_postgre_pgadmin4.pgerd
+migrations/
