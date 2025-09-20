@@ -1,2 +1,25 @@
 __pycache__
 *.zip
+venv/
+
+db/
+*.zip
+app/
+*.env
+*.zip
+*.exe
+*.db
+# */.db/
+# **/.db/
+*.sqlite3
+*.sql
+*.pgerd
+.hintrc
+*.hintrc
+*/venv/
+instance/
+migrations/
+.vscode/
+__pycache__/
+*/__pycache__/
+**/__pycache__/
