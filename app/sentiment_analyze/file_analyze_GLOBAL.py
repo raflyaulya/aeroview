@@ -12,7 +12,7 @@ import seaborn as sns  # For advanced visualization (used for bar plots)
 import requests  # For making HTTP requests to scrape web pages
 from app.models import *
 from app.extensions import db
-from datetime import datetime
+# from datetime import datetime
 
 import nltk  # For natural language processing
 from nltk.corpus import stopwords  # For accessing stopword lists

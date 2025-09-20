@@ -16,7 +16,7 @@ import spacy
 import nltk
 from nltk.probability import FreqDist  # For frequency distribution analysis
 from nltk.corpus import stopwords
-from textstat.textstat import textstatistics #, legacy_round
+# from textstat.textstat import textstatistics #, legacy_round
 from textblob import TextBlob
 from urllib.parse import quote as url_quote
 from concurrent.futures import ThreadPoolExecutor
